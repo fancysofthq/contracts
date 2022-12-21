@@ -40,4 +40,16 @@ A hype machine for NFTs.
 
 1. Run `pnpm run deploy -- --network <network>`.
 
+### Known deployments
+
+#### Polygon Mumbai
+
+```
+NFTFair deployed to 0x51fd09Bf2059Cfc88C508A41866087E1ba0EBBf7
+Tx 0x38272069b6aad11592c53f4ccaf59428cfee345805012bd2d978ac5b0d374ab8
+
+NFTHype deployed to 0x38699A7e76805379c6D46EC447C263B389673bAf
+Tx 0xe57da0fbee7d03ea2a11ae662551e657b05ec0eff1bf28932d30163af43b553d
+```
+
 [^1]: https://github.com/nxsf/ipnft
