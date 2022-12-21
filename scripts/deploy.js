@@ -36,7 +36,7 @@ async function main() {
         LibIPNFT: process.env.ETH_LIB_IPNFT_ADDRESS,
       },
     },
-    ["JOB", "JOB"]
+    ["ACME", "ACME"] // Change this to your own name and symbol
   );
 
   const ipft1155Redeemable = await deploy("IPNFT1155Redeemable", {
@@ -46,7 +46,7 @@ async function main() {
   });
 
   const nftFair = await deploy("NFTFair");
-  // const nftHype = await deploy("NFTHype");
+  const nftHype = await deploy("NFTHype");
 }
 
 main()
