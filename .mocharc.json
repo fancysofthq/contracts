@@ -1,0 +1,6 @@
+{
+  "spec": "dist/test/**/*.test.js",
+  "node-option": [
+    "experimental-specifier-resolution=node"
+  ]
+}

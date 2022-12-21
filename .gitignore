@@ -1,0 +1,10 @@
+artifacts
+cache
+contracts/typechain
+dist
+node_modules
+
+.env
+pnpm-lock.yaml
+
+*.local*

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "useDefineForClassFields": false,
+    "strict": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "outDir": "dist",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["contracts/typechain", "src", "test", "scripts"]
+}
