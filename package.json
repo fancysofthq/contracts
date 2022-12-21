@@ -1,5 +1,5 @@
 {
-  "name": "@fancysofthq/contracts",
+  "name": "@fancysoft/contracts",
   "author": {
     "name": "Fancy Software",
     "url": "http://fancysoft.eth"
@@ -7,9 +7,6 @@
   "repository": "git+https://github.com/fancysofthq/contracts.git",
   "version": "0.1.0-rc1",
   "license": "UNLICENSED",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "type": "module",
   "engines": {
     "node": "^18.0"
