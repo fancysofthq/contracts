@@ -5,7 +5,7 @@
     "url": "http://fancysoft.eth"
   },
   "repository": "git+https://github.com/fancysofthq/contracts.git",
-  "version": "0.1.0-rc2",
+  "version": "0.1.0-rc3",
   "license": "UNLICENSED",
   "type": "module",
   "engines": {
