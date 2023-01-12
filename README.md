@@ -16,11 +16,11 @@ Soulbound IPNFTs[^1] are bound to the owner's address and cannot be transferred.
 
 Send minted IPNFTs[^1] back to the contract before they expire to redeem them.
 
-### NFTFair
+### NFTMarketplace
 
-> Non-fungible Token Fair
+> Non-fungible Token Marketplace
 
-A meta NFT marketplace without base fee.
+A meta NFT marketplace contract without base fee.
 
 ### NFTHype
 

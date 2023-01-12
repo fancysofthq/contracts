@@ -3,21 +3,21 @@
 import { expect, use } from "chai";
 import { deployContract, MockProvider, solidity } from "ethereum-waffle";
 import {
-  NFTFair,
-  NFTFair__factory,
+  NFTMarketplace,
+  NFTMarketplace__factory,
   ERC1155Dummy__factory,
   ERC1155Dummy,
 } from "../contracts/typechain/index";
 import { BigNumber, BytesLike, ethers } from "ethers";
-import * as Listing from "../src/NFTFair/Listing";
+import * as Listing from "../src/NFTMarketplace/Listing";
 
 use(solidity);
 
-describe("NFTFair", async () => {
+describe("NFTMarketplace", async () => {
   const [w0, w1, w2, app, owner] = new MockProvider().getWallets();
 
   let erc1155Dummy: ERC1155Dummy;
-  let nftStore: NFTFair;
+  let nftStore: NFTMarketplace;
   let listingId: BytesLike;
 
   before(async () => {
@@ -28,8 +28,8 @@ describe("NFTFair", async () => {
 
     nftStore = (await deployContract(
       owner,
-      NFTFair__factory as any
-    )) as NFTFair;
+      NFTMarketplace__factory as any
+    )) as NFTMarketplace;
 
     listingId = Listing.encodeId(
       app.address,
@@ -86,7 +86,7 @@ describe("NFTFair", async () => {
                 ethers.utils.parseEther("0.25")
               ).encode()
             )
-        ).to.be.revertedWith("NFTFair: invalid seller");
+        ).to.be.revertedWith("NFTMarketplace: invalid seller");
       });
     });
 
@@ -141,7 +141,7 @@ describe("NFTFair", async () => {
           nftStore.connect(w2).purchase(listingId, 2, w2.address, {
             value: ethers.utils.parseEther("0.49"),
           })
-        ).to.be.revertedWith("NFTFair: invalid value");
+        ).to.be.revertedWith("NFTMarketplace: invalid value");
       });
     });
 
@@ -151,7 +151,7 @@ describe("NFTFair", async () => {
           nftStore.connect(w2).purchase(listingId, 2, w2.address, {
             value: ethers.utils.parseEther("0.51"),
           })
-        ).to.be.revertedWith("NFTFair: invalid value");
+        ).to.be.revertedWith("NFTMarketplace: invalid value");
       });
     });
 
@@ -217,7 +217,7 @@ describe("NFTFair", async () => {
           nftStore.connect(w2).purchase(listingId, 49, w2.address, {
             value: ethers.utils.parseEther("12.25"),
           })
-        ).to.be.revertedWith("NFTFair: insufficient stock");
+        ).to.be.revertedWith("NFTMarketplace: insufficient stock");
       });
     });
   });

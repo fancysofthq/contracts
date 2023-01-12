@@ -11,12 +11,12 @@ import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 // TODO: Seller approvals, primary & secondary listings.
 // TODO: Fungible (ERC777) tokens.
 /**
- * @title NFT Fair
+ * @title NFT Marketplace
  * @author Fancy Software <fancysoft.eth>
  *
- * A meta NFT marketplace without base fee.
+ * A meta NFT marketplace contract without base fee.
  */
-contract NFTFair is IERC721Receiver, IERC1155Receiver {
+contract NFTMarketplace is IERC721Receiver, IERC1155Receiver {
     struct Token {
         address contractAddress;
         uint256 tokenId;
@@ -80,7 +80,7 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
     mapping(bytes32 => Listing) public getListing;
 
     modifier onlyAppOwner(address app) {
-        require(msg.sender == app, "NFTFair: not app owner");
+        require(msg.sender == app, "NFTMarketplace: not app owner");
         _;
     }
 
@@ -88,7 +88,7 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
      * Set application fee.
      */
     function setAppFee(address app, uint8 fee) public onlyAppOwner(app) {
-        require(getAppFee[app] != fee, "NFTFair: already set");
+        require(getAppFee[app] != fee, "NFTMarketplace: already set");
         getAppFee[app] = fee;
         emit SetAppFee(app, fee);
     }
@@ -103,7 +103,7 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
         _checkConfig(config);
         require(
             (config.seller == from || config.seller == operator),
-            "NFTFair: invalid seller"
+            "NFTMarketplace: invalid seller"
         );
 
         _processListing(operator, config, Token(msg.sender, tokenId), 1);
@@ -121,7 +121,7 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
         _checkConfig(config);
         require(
             (config.seller == from || config.seller == operator),
-            "NFTFair: invalid seller"
+            "NFTMarketplace: invalid seller"
         );
 
         _processListing(
@@ -145,7 +145,7 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
         _checkConfig(config);
         require(
             config.seller == from || config.seller == operator,
-            "NFTFair: invalid seller"
+            "NFTMarketplace: invalid seller"
         );
 
         for (uint256 i = 0; i < tokenIds.length; i++) {
@@ -163,8 +163,14 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
     function setListingPrice(bytes32 listingId, uint256 newPrice) public {
         Listing storage listing = getListing[listingId];
 
-        require(msg.sender == listing.config.seller, "NFTFair: unauthorized");
-        require(listing.config.price != newPrice, "NFTFair: already set");
+        require(
+            msg.sender == listing.config.seller,
+            "NFTMarketplace: unauthorized"
+        );
+        require(
+            listing.config.price != newPrice,
+            "NFTMarketplace: already set"
+        );
 
         listing.config.price = newPrice;
 
@@ -174,8 +180,14 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
     function withdraw(bytes32 listingId, uint256 amount, address to) external {
         Listing storage listing = getListing[listingId];
 
-        require(msg.sender == listing.config.seller, "NFTFair: unauthorized");
-        require(listing.stockSize >= amount, "NFTFair: not enough stock");
+        require(
+            msg.sender == listing.config.seller,
+            "NFTMarketplace: unauthorized"
+        );
+        require(
+            listing.stockSize >= amount,
+            "NFTMarketplace: not enough stock"
+        );
 
         unchecked {
             listing.stockSize -= amount;
@@ -224,12 +236,15 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
     ) external payable {
         Listing storage listing = getListing[listingId];
 
-        require(amount > 0, "NFTFair: amount must be positive");
-        require(listing.stockSize >= amount, "NFTFair: insufficient stock");
+        require(amount > 0, "NFTMarketplace: amount must be positive");
+        require(
+            listing.stockSize >= amount,
+            "NFTMarketplace: insufficient stock"
+        );
 
         require(
             listing.config.price * amount == msg.value,
-            "NFTFair: invalid value"
+            "NFTMarketplace: invalid value"
         );
 
         unchecked {
@@ -256,7 +271,7 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
             if (royaltyAddress != listing.config.seller && royaltyValue > 0) {
                 profit -= royaltyValue;
                 (bool ok, ) = royaltyAddress.call{value: royaltyValue}("");
-                require(ok, "NFTFair: failed to send royalty");
+                require(ok, "NFTMarketplace: failed to send royalty");
             }
         }
 
@@ -272,14 +287,14 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
                 }
 
                 (bool ok, ) = listing.config.app.call{value: appFee_}("");
-                require(ok, "NFTFair: failed to send app fee");
+                require(ok, "NFTMarketplace: failed to send app fee");
             }
         }
 
         // Transfer what's left to the seller.
         if (profit > 0) {
             (bool ok, ) = listing.config.seller.call{value: profit}("");
-            require(ok, "NFTFair: failed to send profit");
+            require(ok, "NFTMarketplace: failed to send profit");
         }
 
         // Then transfer the token(s) to the buyer.
@@ -391,9 +406,9 @@ contract NFTFair is IERC721Receiver, IERC1155Receiver {
     }
 
     function _checkConfig(ListingConfig memory config) internal pure {
-        require(config.app != address(0), "NFTFair: invalid app");
-        require(config.price > 0, "NFTFair: invalid price");
-        require(config.seller != address(0), "NFTFair: invalid seller");
+        require(config.app != address(0), "NFTMarketplace: invalid app");
+        require(config.price > 0, "NFTMarketplace: invalid price");
+        require(config.seller != address(0), "NFTMarketplace: invalid seller");
     }
 
     function _isInterface(

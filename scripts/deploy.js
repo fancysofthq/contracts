@@ -45,7 +45,7 @@ async function main() {
     },
   });
 
-  const nftFair = await deploy("NFTFair");
+  const nftMarketplace = await deploy("NFTMarketplace");
   const nftHype = await deploy("NFTHype");
 }
 
