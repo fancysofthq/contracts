@@ -28,6 +28,10 @@ A meta NFT marketplace contract without base fee.
 
 A hype machine for NFTs.
 
+### ERC20Shares
+
+Shareholders of this contract receive a portion of all native token value sent to it.
+
 ## Development
 
 1. Run Hardhat node with `pnpm run node`.
